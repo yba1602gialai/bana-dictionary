@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Từ điển Bana → Việt</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+    .word {
+      background: white;
+      padding: 10px;
+      margin-bottom: 8px;
+      border-radius: 5px;
+    }
+    .bana {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .viet {
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Từ điển Bana → Việt</h1>
+
+<input type="text" id="search" placeholder="Nhập từ Bana (vd: sa, kon...)">
+
+<div id="result"></div>
+
+<script>
+  const banaWords = [
+    { bana: "sa", viet: "ăn" },
+    { bana: "kon", viet: "con" },
+    { bana: "hla", viet: "lá" },
+    { bana: "sem", viet: "chim" },
+  ];
+
+  const searchInput = document.getElementById("search");
+  const resultDiv = document.getElementById("result");
+
+  function render(words) {
+    resultDiv.innerHTML = "";
+    if (words.length === 0) {
+      resultDiv.innerHTML = "<p>Không tìm thấy</p>";
+      return;
+    }
+    words.forEach(word => {
+      resultDiv.innerHTML += `
+        <div class="word">
+          <div class="bana">${word.bana}</div>
+          <div class="viet">${word.viet}</div>
+        </div>
+      `;
+    });
+  }
+
+  searchInput.addEventListener("input", () => {
+    const query = searchInput.value.toLowerCase();
+    const filtered = banaWords.filter(w =>
+      w.bana.toLowerCase().includes(query)
+    );
+    render(filtered);
+  });
+
+  render(banaWords);
+</script>
+
+</body>
+</html>
