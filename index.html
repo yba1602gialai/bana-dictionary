@@ -1,77 +1,121 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Từ điển Bana → Việt</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      padding: 20px;
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f2f4f8;
     }
-    h1 {
+
+    .app {
+      max-width: 420px;
+      margin: auto;
+      min-height: 100vh;
+      background: #ffffff;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    header {
+      background: #2f80ed;
+      color: white;
+      padding: 16px;
       text-align: center;
+      font-size: 20px;
+      font-weight: bold;
     }
-    input {
+
+    .search-box {
+      padding: 16px;
+    }
+
+    .search-box input {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       font-size: 16px;
-      margin-bottom: 15px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      outline: none;
     }
-    .word {
-      background: white;
-      padding: 10px;
-      margin-bottom: 8px;
-      border-radius: 5px;
+
+    .list {
+      padding: 0 16px 16px;
     }
+
+    .card {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+
     .bana {
       font-size: 20px;
       font-weight: bold;
     }
+
     .viet {
+      font-size: 16px;
       color: #555;
+      margin-top: 4px;
+    }
+
+    .empty {
+      text-align: center;
+      color: #999;
+      margin-top: 40px;
     }
   </style>
 </head>
 <body>
 
-<h1>Từ điển Bana → Việt</h1>
+<div class="app">
+  <header>Từ điển Bana → Việt</header>
 
-<input type="text" id="search" placeholder="Nhập từ Bana (vd: sa, kon...)">
+  <div class="search-box">
+    <input id="search" placeholder="Nhập từ Bana (vd: sa, kon...)">
+  </div>
 
-<div id="result"></div>
+  <div id="list" class="list"></div>
+</div>
 
 <script>
   const banaWords = [
     { bana: "sa", viet: "ăn" },
     { bana: "kon", viet: "con" },
     { bana: "hla", viet: "lá" },
-    { bana: "sem", viet: "chim" },
+    { bana: "sem", viet: "chim" }
   ];
 
-  const searchInput = document.getElementById("search");
-  const resultDiv = document.getElementById("result");
+  const search = document.getElementById("search");
+  const list = document.getElementById("list");
 
   function render(words) {
-    resultDiv.innerHTML = "";
+    list.innerHTML = "";
     if (words.length === 0) {
-      resultDiv.innerHTML = "<p>Không tìm thấy</p>";
+      list.innerHTML = '<div class="empty">Không tìm thấy</div>';
       return;
     }
-    words.forEach(word => {
-      resultDiv.innerHTML += `
-        <div class="word">
-          <div class="bana">${word.bana}</div>
-          <div class="viet">${word.viet}</div>
-        </div>
+
+    words.forEach(w => {
+      const div = document.createElement("div");
+      div.className = "card";
+      div.innerHTML = `
+        <div class="bana">${w.bana}</div>
+        <div class="viet">${w.viet}</div>
       `;
+      list.appendChild(div);
     });
   }
 
-  searchInput.addEventListener("input", () => {
-    const query = searchInput.value.toLowerCase();
+  search.addEventListener("input", () => {
+    const q = search.value.toLowerCase();
     const filtered = banaWords.filter(w =>
-      w.bana.toLowerCase().includes(query)
+      w.bana.toLowerCase().includes(q)
     );
     render(filtered);
   });
